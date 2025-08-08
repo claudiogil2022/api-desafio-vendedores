@@ -1,0 +1,594 @@
+{
+  "info": {
+    "name": "API Vendedores - Collection",
+    "description": "Collection completa da API de Vendedores com todos os endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Vendedores",
+      "item": [
+        {
+          "name": "Criar Vendedor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"João Silva\",\n  \"dataNascimento\": \"1990-05-15\",\n  \"documento\": \"11144477735\",\n  \"email\": \"joao.silva@empresa.com\",\n  \"tipoContratacao\": \"CLT\",\n  \"filialId\": \"1\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/vendedores",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "vendedores"]
+            },
+            "description": "Cria um novo vendedor (processamento assíncrono)"
+          }
+        },
+        {
+          "name": "Listar Todos os Vendedores",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/vendedores",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "vendedores"]
+            },
+            "description": "Lista todos os vendedores cadastrados"
+          }
+        },
+        {
+          "name": "Listar Vendedores por Filial",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/vendedores?filialId=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "vendedores"],
+              "query": [
+                {
+                  "key": "filialId",
+                  "value": "1",
+                  "description": "ID da filial para filtrar"
+                }
+              ]
+            },
+            "description": "Lista vendedores de uma filial específica"
+          }
+        },
+        {
+          "name": "Consultar Vendedor por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/vendedores/{{vendedorId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "vendedores", "{{vendedorId}}"]
+            },
+            "description": "Busca um vendedor pelo seu ID"
+          }
+        },
+        {
+          "name": "Consultar Vendedor por Processamento (NOVO)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/vendedores/processamento/{{processamentoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "vendedores", "processamento", "{{processamentoId}}"]
+            },
+            "description": "Consulta o vendedor diretamente usando o ID do processamento inicial"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200 && pm.response.json() && pm.response.json().data) {",
+                  "    const vendedor = pm.response.json().data;",
+                  "    if (vendedor.id) {",
+                  "        pm.globals.set('vendedorId', vendedor.id);",
+                  "        console.log('Vendedor ID capturado via processamento: ' + vendedor.id);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consultar Vendedor por Matrícula",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/vendedores/matricula/00000001-CLT",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "vendedores", "matricula", "00000001-CLT"]
+            },
+            "description": "Busca um vendedor pela sua matrícula"
+          }
+        },
+        {
+          "name": "Atualizar Vendedor",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"João Silva Santos\",\n  \"email\": \"joao.santos@empresa.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/vendedores/{{vendedorId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "vendedores", "{{vendedorId}}"]
+            },
+            "description": "Atualiza os dados de um vendedor existente"
+          }
+        },
+        {
+          "name": "Deletar Vendedor",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/vendedores/{{vendedorId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "vendedores", "{{vendedorId}}"]
+            },
+            "description": "Remove um vendedor do sistema"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Processamentos",
+      "item": [
+        {
+          "name": "Consultar Status do Processamento",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/processamentos/{{processamentoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "processamentos", "{{processamentoId}}"]
+            },
+            "description": "Consulta o status de um processamento assíncrono"
+          }
+        },
+        {
+          "name": "Acessar Vendedor via Processamento (NOVO)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/processamentos/{{processamentoId}}/vendedor",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "processamentos", "{{processamentoId}}", "vendedor"]
+            },
+            "description": "Acessa diretamente o vendedor através do ID do processamento (com redirecionamento)"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200 && pm.response.json() && pm.response.json().data) {",
+                  "    const data = pm.response.json().data;",
+                  "    // Se retornou vendedor",
+                  "    if (data.matricula) {",
+                  "        pm.globals.set('vendedorId', data.id);",
+                  "        console.log('Vendedor acessado via processamento: ' + data.id);",
+                  "    }",
+                  "    // Se retornou processamento",
+                  "    if (data.status) {",
+                  "        console.log('Status do processamento: ' + data.status);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Filiais",
+      "item": [
+        {
+          "name": "Listar Filiais",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/filiais",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "filiais"]
+            },
+            "description": "Lista todas as filiais ativas"
+          }
+        },
+        {
+          "name": "Consultar Filial por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/filiais/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "filiais", "1"]
+            },
+            "description": "Busca uma filial pelo seu ID"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Exemplos de Criação",
+      "item": [
+        {
+          "name": "Criar Vendedor CLT",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Maria Santos\",\n  \"dataNascimento\": \"1985-03-20\",\n  \"documento\": \"98765432100\",\n  \"email\": \"maria.santos@empresa.com\",\n  \"tipoContratacao\": \"CLT\",\n  \"filialId\": \"1\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/vendedores",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "vendedores"]
+            },
+            "description": "Exemplo de criação de vendedor CLT"
+          }
+        },
+        {
+          "name": "Criar Vendedor Terceirizado",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Carlos Oliveira\",\n  \"dataNascimento\": \"1988-11-10\",\n  \"documento\": \"12345678901\",\n  \"email\": \"carlos.oliveira@terceiros.com\",\n  \"tipoContratacao\": \"OUTSOURCING\",\n  \"filialId\": \"2\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/vendedores",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "vendedores"]
+            },
+            "description": "Exemplo de criação de vendedor terceirizado"
+          }
+        },
+        {
+          "name": "Criar Vendedor Pessoa Jurídica",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Empresa ABC LTDA\",\n  \"dataNascimento\": \"2010-01-15\",\n  \"documento\": \"11222333000181\",\n  \"email\": \"contato@empresaabc.com\",\n  \"tipoContratacao\": \"PESSOA_JURIDICA\",\n  \"filialId\": \"3\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/vendedores",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "vendedores"]
+            },
+            "description": "Exemplo de criação de vendedor pessoa jurídica (CNPJ)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Casos de Erro",
+      "item": [
+        {
+          "name": "Erro - Dados Inválidos",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"\",\n  \"dataNascimento\": \"1990-05-15\",\n  \"documento\": \"123\",\n  \"email\": \"email-invalido\",\n  \"tipoContratacao\": \"CLT\",\n  \"filialId\": \"1\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/vendedores",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "vendedores"]
+            },
+            "description": "Teste de validação com dados inválidos"
+          }
+        },
+        {
+          "name": "Erro - Filial Inativa",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Teste Filial Inativa\",\n  \"dataNascimento\": \"1990-05-15\",\n  \"documento\": \"11144477735\",\n  \"email\": \"teste@empresa.com\",\n  \"tipoContratacao\": \"CLT\",\n  \"filialId\": \"4\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/vendedores",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "vendedores"]
+            },
+            "description": "Teste com filial inativa (ID 4)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🚀 Fluxos Completos (NOVOS)",
+      "item": [
+        {
+          "name": "Fluxo 1: Criar + Acessar Direto",
+          "item": [
+            {
+              "name": "1. Criar Vendedor",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"Maria Silva Fluxo\",\n  \"dataNascimento\": \"1985-03-20\",\n  \"documento\": \"98765432100\",\n  \"email\": \"maria.fluxo@empresa.com\",\n  \"tipoContratacao\": \"CLT\",\n  \"filialId\": \"1\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/vendedores",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "vendedores"]
+                },
+                "description": "Criar vendedor e capturar processamento ID"
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if (pm.response.json() && pm.response.json().data) {",
+                      "    const processamento = pm.response.json().data;",
+                      "    pm.globals.set('processamentoId', processamento.id);",
+                      "    console.log('✅ Processamento iniciado: ' + processamento.id);",
+                      "    console.log('👉 Execute o próximo request: \"2. Acessar Vendedor Direto\"');",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "2. Acessar Vendedor Direto",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/vendedores/processamento/{{processamentoId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "vendedores", "processamento", "{{processamentoId}}"]
+                },
+                "description": "Acessa vendedor diretamente usando processamento ID"
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if (pm.response.code === 200 && pm.response.json() && pm.response.json().data) {",
+                      "    const data = pm.response.json().data;",
+                      "    if (data.matricula) {",
+                      "        pm.globals.set('vendedorId', data.id);",
+                      "        console.log('🎉 Vendedor criado: ' + data.nome + ' (ID: ' + data.id + ')');",
+                      "    } else if (data.status) {",
+                      "        console.log('⏳ Status: ' + data.status + ' - Execute novamente em alguns segundos');",
+                      "    }",
+                      "} else {",
+                      "    console.log('❌ Erro: ' + pm.response.json().message);",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Fluxo 2: Monitorar Status + Acessar",
+          "item": [
+            {
+              "name": "1. Monitorar Processamento",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/processamentos/{{processamentoId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "processamentos", "{{processamentoId}}"]
+                },
+                "description": "Monitora status do processamento"
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if (pm.response.json() && pm.response.json().data) {",
+                      "    const processamento = pm.response.json().data;",
+                      "    console.log('Status: ' + processamento.status);",
+                      "    if (processamento.status === 'CONCLUIDO' && processamento.vendedorId) {",
+                      "        pm.globals.set('vendedorId', processamento.vendedorId);",
+                      "        console.log('✅ Vendedor criado! ID: ' + processamento.vendedorId);",
+                      "        console.log('👉 Execute \"2. Acessar Vendedor Final\"');",
+                      "    } else if (processamento.status === 'ERRO') {",
+                      "        console.log('❌ Erro: ' + processamento.erro);",
+                      "    } else {",
+                      "        console.log('⏳ Aguarde e execute novamente...');",
+                      "    }",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "2. Acessar Vendedor Final",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/vendedores/{{vendedorId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "vendedores", "{{vendedorId}}"]
+                },
+                "description": "Acessa vendedor pelo ID obtido no processamento"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Monitoramento",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["actuator", "health"]
+            },
+            "description": "Verifica o status da aplicação"
+          }
+        },
+        {
+          "name": "Métricas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/metrics",
+              "host": ["{{baseUrl}}"],
+              "path": ["actuator", "metrics"]
+            },
+            "description": "Métricas da aplicação"
+          }
+        },
+        {
+          "name": "API Docs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api-docs",
+              "host": ["{{baseUrl}}"],
+              "path": ["api-docs"]
+            },
+            "description": "Documentação OpenAPI em JSON"
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Script global executado antes de cada request",
+          "console.log('Executando request para: ' + pm.request.url);"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Script global executado após cada response",
+          "pm.test('Status code é válido', function () {",
+          "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202, 400, 404, 500]);",
+          "});",
+          "",
+          "// Capturar IDs para uso em outros requests",
+          "if (pm.response.json() && pm.response.json().data) {",
+          "    const data = pm.response.json().data;",
+          "    ",
+          "    // Capturar ID do vendedor criado",
+          "    if (data.vendedorId) {",
+          "        pm.globals.set('vendedorId', data.vendedorId);",
+          "        console.log('Vendedor ID capturado: ' + data.vendedorId);",
+          "    }",
+          "    ",
+          "    // Capturar ID do processamento",
+          "    if (data.id && data.status) {",
+          "        pm.globals.set('processamentoId', data.id);",
+          "        console.log('Processamento ID capturado: ' + data.id);",
+          "    }",
+          "    ",
+          "    // Capturar ID do vendedor direto",
+          "    if (data.id && data.matricula) {",
+          "        pm.globals.set('vendedorId', data.id);",
+          "        console.log('Vendedor ID direto capturado: ' + data.id);",
+          "    }",
+          "}"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "api-vendedores-env",
+  "name": "API Vendedores - Environment",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "vendedorId",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "processamentoId",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "filialId",
+      "value": "1",
+      "enabled": true,
+      "type": "default"
+    }
+  ],
+  "_postman_variable_scope": "environment"
+}

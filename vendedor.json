@@ -1,0 +1,8 @@
+{
+  "nome": "João Silva",
+  "dataNascimento": "1990-05-15",
+  "documento": "11144477735",
+  "email": "joao.silva@empresa.com",
+  "tipoContratacao": "CLT",
+  "filialId": "1"
+}
