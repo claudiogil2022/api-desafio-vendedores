@@ -42,6 +42,10 @@ class VendedorControllerTest {
     private com.desafio.application.usecases.AtualizarVendedorUseCase atualizarVendedorUseCase;
     @MockBean
     private com.desafio.application.usecases.DeletarVendedorUseCase deletarVendedorUseCase;
+    @MockBean
+    private com.desafio.application.usecases.ConsultarVendedorPorProcessamentoUseCase consultarVendedorPorProcessamentoUseCase;
+    @MockBean
+    private com.desafio.application.usecases.ConsultarProcessamentoUseCase consultarProcessamentoUseCase;
 
     @Test
     void deveCriarVendedorComSucesso() throws Exception {
